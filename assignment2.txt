@@ -1,0 +1,172 @@
+COMPONENTS USED:
+1. ARDUINO UNO R3
+2. RESISTOR 10KOhm and 220ohm
+3.RGB LED
+4.Push button.
+CIRCUIT DESIGN:
+First of all RGB led is placed on j3,j4,j5 & j6 of breadboard and 3 push buttons as shown in figure below.
+10kohm resistor are connected to the one end of pushbuttons respectively while other end are directly connected to the Arduinos port. similarly, 220ohm resistor are connected to the  anode of RGB led where as cathode is grounded. The anode part of led are connected to the the 9th,10th and 11th port of Arduino. the 5V pd is driven through the pushbutton to led. circuit design RGB led controlled by 3 push buttoms.
+WORKING MECHANISM:
+As the simulation starts it doesn't show any changes on led. when we press the button connected to port number 4 red light is glow and it glows until other buttons is pressed. As we pressed the push buttons connected to port number 7 blue light glow as the same button is pressed for few number of times the blue light becomes brighter and brighter. Similarly when bottom is pressed which is connected to port number 2 green light starts glowing and increase it's brightness as we increased number of presses.\
+CODE:
+#define red 11
+
+#define blue 10
+
+#define green 9
+
+int buttonPin[3]={4,7,2};
+
+int n=0;
+
+boolean lastbutton=LOW;
+
+boolean currentbutton=LOW;
+
+ int glow=0;
+
+
+
+void setup() {
+
+  pinMode(buttonPin[0], INPUT);
+
+  pinMode(buttonPin[1], INPUT);
+
+  pinMode(buttonPin[2], INPUT);
+
+  pinMode(red, OUTPUT);
+
+  pinMode(green, OUTPUT);
+
+  pinMode(blue, OUTPUT);
+
+}
+
+boolean fun(boolean last)
+
+{
+
+
+
+ if((digitalRead(buttonPin[0])==HIGH) ||(digitalRead(buttonPin[1])==HIGH) || (digitalRead(buttonPin[2])==HIGH))  
+
+ {
+
+   glow=glow+16;
+
+ }
+
+   
+
+   if(digitalRead(buttonPin[0])==HIGH){
+
+      n=0;
+
+      
+
+    }
+
+        else if(digitalRead(buttonPin[1])==HIGH){
+
+      n=1;
+
+      
+
+        }
+
+           else if(digitalRead(buttonPin[2])==HIGH){
+
+      n=2;
+
+      
+
+           }
+
+  
+
+  boolean current=HIGH;
+
+  if (last!=current)
+
+  {
+
+    delay(5);
+
+    current=HIGH;
+
+  }
+
+  return current;
+
+}
+
+void setmode(int mode){
+
+  if(mode==0)
+
+  {
+
+    analogWrite(red,glow);
+
+    digitalWrite(blue,LOW);
+
+    digitalWrite(green,LOW);
+
+  }
+
+  else if(mode==1)
+
+  {
+
+  
+
+    analogWrite(red,LOW);
+
+    analogWrite(blue,glow);
+
+    digitalWrite(green,LOW);
+
+  }
+
+ else if(mode==2)
+
+  {
+
+ 
+
+    analogWrite(red,LOW);
+
+    digitalWrite(blue,LOW);
+
+    analogWrite(green,glow);
+
+  }
+
+}
+
+void loop()
+
+{
+
+  currentbutton=fun(lastbutton);
+
+  if(lastbutton==LOW && currentbutton==HIGH)
+
+  {
+
+    n++;
+
+  }
+
+  lastbutton=currentbutton;
+
+  setmode(n);
+
+  if(glow<255)glow;
+
+}
+
+  NOTE: I was unable to do everything as per your instruction ,but i tried my best to give the results .
+
+please help me understand more on  how code execute and how it works.  
